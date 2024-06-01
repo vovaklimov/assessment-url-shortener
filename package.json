@@ -1,0 +1,22 @@
+{
+  "name": "assessment-url-shortener",
+  "version": "0.0.1",
+  "private": true,
+  "module": "true",
+  "scripts": {
+    "format": "prettier --write ./**/*.{js,json,ts}",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "license": "UNLICENSED",
+  "packageManager": "^npm@10.5.1",
+  "devDependencies": {
+    "@types/node": "^20.12.13",
+    "@vitest/coverage-istanbul": "^1.6.0",
+    "eslint": "^9.3.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.3.0",
+    "prettier": "3.2.5",
+    "vitest": "^1.6.0"
+  }
+}
