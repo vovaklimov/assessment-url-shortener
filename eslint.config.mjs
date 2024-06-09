@@ -3,15 +3,25 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 
 const config = [
+  js.configs.recommended,
+  eslintConfigPrettier,
   {
     languageOptions: {
       sourceType: "module",
-      ecmaVersion: 2021,
+      ecmaVersion: 2022,
       globals: { ...globals.node },
     },
   },
-  js.configs.recommended,
-  eslintConfigPrettier,
+  {
+    rules: {
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
 ];
 
 export default config;

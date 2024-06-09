@@ -2,20 +2,29 @@
   "name": "assessment-url-shortener",
   "version": "0.0.1",
   "private": true,
-  "module": "true",
+  "type": "module",
   "scripts": {
+    "start": "node --watch src/main.js | pino-pretty",
     "format": "prettier --write ./**/*.{js,json,ts}",
     "test": "vitest",
     "test:coverage": "vitest --coverage"
   },
   "license": "UNLICENSED",
   "packageManager": "^npm@10.5.1",
+  "dependencies": {
+    "@fastify/mongodb": "^8.0.0",
+    "base-x": "^4.0.0",
+    "base62": "^2.0.2",
+    "fastify": "^4.27.0",
+    "pino": "^9.1.0"
+  },
   "devDependencies": {
     "@types/node": "^20.12.13",
     "@vitest/coverage-istanbul": "^1.6.0",
     "eslint": "^9.3.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.3.0",
+    "pino-pretty": "^11.1.0",
     "prettier": "3.2.5",
     "vitest": "^1.6.0"
   }
