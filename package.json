@@ -4,28 +4,41 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node --watch src/main.js | pino-pretty",
-    "format": "prettier --write ./**/*.{js,json,ts}",
+    "build": "esbuild src/main.ts --platform=node --outfile=dist/main.js --format=esm --sourcemap",
+    "start": "node dist/main.js",
+    "dev": "pnpm run \"/^(start:dev|typecheck:dev)$/\"",
+    "start:dev": "node --import=tsx --watch src/main.ts | pino-pretty",
+    "typecheck:dev": "tsc --watch --preserveWatchOutput",
+    "lint": "pnpm run \"/^(lint:eslint|lint:typecheck|lint:prettier)$/\"",
+    "lint:fix": "pnpm run \"/^(lint:eslint:fix|lint:prettier:fix)$/\"",
+    "lint:eslint": "eslint ./src/**/*.ts",
+    "lint:typecheck": "tsc",
+    "lint:prettier": "prettier --check ./**/*.{js,json,ts}",
+    "lint:prettier:fix": "prettier --write ./**/*.{js,json,ts}",
+    "lint:eslint:fix": "eslint ./src/**/*.ts --fix",
     "test": "vitest",
     "test:coverage": "vitest --coverage"
   },
   "license": "UNLICENSED",
-  "packageManager": "^npm@10.5.1",
+  "packageManager": "pnpm@9.5.0",
   "dependencies": {
     "@fastify/mongodb": "^8.0.0",
-    "base-x": "^4.0.0",
-    "base62": "^2.0.2",
-    "fastify": "^4.27.0",
-    "pino": "^9.1.0"
+    "fastify": "^4.28.1",
+    "pino": "^9.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.12.13",
-    "@vitest/coverage-istanbul": "^1.6.0",
-    "eslint": "^9.3.0",
+    "@types/node": "^20.14.10",
+    "@vitest/coverage-istanbul": "^2.0.2",
+    "esbuild": "0.23.0",
+    "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
-    "globals": "^15.3.0",
-    "pino-pretty": "^11.1.0",
-    "prettier": "3.2.5",
-    "vitest": "^1.6.0"
+    "globals": "^15.8.0",
+    "pino-pretty": "^11.2.1",
+    "prettier": "3.3.2",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.16.0",
+    "vitest": "^2.0.2"
   }
 }

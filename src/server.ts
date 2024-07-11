@@ -9,7 +9,7 @@ const fastify = Fastify({
 fastify.register(urlShortcutsRoutes, { prefix: "/shortcuts" });
 fastify.register(redirectsRoutes);
 
-export async function start({ port }) {
+export async function start({ port }: { port: number }) {
   try {
     await fastify.listen({ port });
   } catch (err) {

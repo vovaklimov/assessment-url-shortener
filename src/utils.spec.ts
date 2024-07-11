@@ -15,10 +15,6 @@ describe("bigintToBase62", () => {
     const num = BigInt(`0x14cc7598f2a21a587e466b60480fdc28`);
     expect(bigintToBase62(num)).toBe("dFHeVIhugrWMsa4wlXzdQ");
   });
-
-  it("should throw for invalid input", () => {
-    expect(() => bigintToBase62("invalid")).toThrow("bigintToBase62 expects a BigInt or number");
-  });
 });
 
 describe(base62ToBigint, () => {

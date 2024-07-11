@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { uuidToBase62 } from "../../utils.js";
+import { uuidToBase62 } from "../../utils";
 
 export function uuidShortcutsGenerator(_url) {
   const uuid = randomUUID();

@@ -1,9 +1,13 @@
+// @ts-check
+
 import js from "@eslint/js";
+import tsEslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 
-const config = [
+export default tsEslint.config(
   js.configs.recommended,
+  ...tsEslint.configs.strict,
   eslintConfigPrettier,
   {
     languageOptions: {
@@ -11,8 +15,6 @@ const config = [
       ecmaVersion: 2022,
       globals: { ...globals.node },
     },
-  },
-  {
     rules: {
       "no-unused-vars": [
         "error",
@@ -22,6 +24,4 @@ const config = [
       ],
     },
   },
-];
-
-export default config;
+);
