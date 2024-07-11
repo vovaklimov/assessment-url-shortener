@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/main.ts --platform=node --outfile=dist/main.js --format=esm --sourcemap",
-    "start": "node dist/main.js",
+    "start": "node --env-file=.env dist/main.js",
     "dev": "pnpm run \"/^(start:dev|typecheck:dev)$/\"",
-    "start:dev": "node --import=tsx --watch src/main.ts | pino-pretty",
+    "start:dev": "node --import=tsx --watch --env-file=./.env src/main.ts | pino-pretty",
     "typecheck:dev": "tsc --watch --preserveWatchOutput",
     "lint": "pnpm run \"/^(lint:eslint|lint:typecheck|lint:prettier)$/\"",
     "lint:fix": "pnpm run \"/^(lint:eslint:fix|lint:prettier:fix)$/\"",
@@ -24,6 +24,8 @@
   "dependencies": {
     "@fastify/mongodb": "^8.0.0",
     "fastify": "^4.28.1",
+    "fastify-plugin": "^4.5.1",
+    "mongodb": "^6.8.0",
     "pino": "^9.2.0",
     "zod": "^3.23.8"
   },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { bigintToBase62, base62ToBigint, uuidToBase62, BASE_62_CHARS } from "./utils.js";
-import { randomUUID } from "crypto";
+import { bigintToBase62, base62ToBigint, uuidToBase62, BASE_62_CHARS } from "./utils";
+import { randomUUID } from "node:crypto";
 
 describe("bigintToBase62", () => {
   it("should correctly encode a 32bit bigint", () => {

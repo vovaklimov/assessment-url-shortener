@@ -1,17 +1,19 @@
 import Fastify from "fastify";
-import { urlShortcutsRoutes } from "./modules/url-shortcuts/url-shortcuts-routes.js";
-import { redirectsRoutes } from "./modules/redirects/redirects-routes.js";
+import configPlugin from "./plugins/config-plugin";
+import { config } from "./config";
 
 const fastify = Fastify({
   logger: true,
 });
 
-fastify.register(urlShortcutsRoutes, { prefix: "/shortcuts" });
-fastify.register(redirectsRoutes);
+fastify.register(configPlugin);
+fastify.register(import("./plugins/mongodb-plugin"));
 
-export async function start({ port }: { port: number }) {
+fastify.register(import("./modules/root-routes"));
+
+export async function start() {
   try {
-    await fastify.listen({ port });
+    await fastify.listen({ port: config.PORT, host: "0.0.0.0" });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

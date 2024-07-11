@@ -1,0 +1,19 @@
+name: assesment-url-shortener
+
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:7.0.12-ubi8
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - type: volume
+        source: mongodb-data
+        target: /data/db
+
+volumes:
+  mongodb-data:
+
+
