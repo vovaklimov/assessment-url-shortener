@@ -15,6 +15,13 @@ describe("bigintToBase62", () => {
     const num = BigInt(`0x14cc7598f2a21a587e466b60480fdc28`);
     expect(bigintToBase62(num)).toBe("dFHeVIhugrWMsa4wlXzdQ");
   });
+
+  it("should throw if input is not bigint or number", () => {
+    // @ts-expect-error Testing invalid input type
+    expect(() => bigintToBase62("invalid" as unknown)).toThrow(
+      "bigintToBase62 expects a BigInt or number",
+    );
+  });
 });
 
 describe(base62ToBigint, () => {
@@ -29,6 +36,10 @@ describe(base62ToBigint, () => {
   it("should correctly decode a 128bit bigint", () => {
     const num = BigInt(`0x14cc7598f2a21a587e466b60480fdc28`);
     expect(base62ToBigint("dFHeVIhugrWMsa4wlXzdQ")).toBe(num);
+  });
+
+  it("should throw for an invalid base62 character", () => {
+    expect(() => base62ToBigint("invalid-base62")).toThrow("Invalid base62 character");
   });
 });
 

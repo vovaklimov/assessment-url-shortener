@@ -1,21 +1,16 @@
-import Fastify from "fastify";
-import configPlugin from "./plugins/config-plugin";
-import { config } from "./config";
+import Fastify, { type FastifyServerOptions } from "fastify";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 
-const fastify = Fastify({
-  logger: true,
-});
+export async function bootstrap(options: FastifyServerOptions = {}) {
+  const app = Fastify(options);
 
-fastify.register(configPlugin);
-fastify.register(import("./plugins/mongodb-plugin"));
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
 
-fastify.register(import("./modules/root-routes"));
+  app.register(import("./plugins/config-plugin"));
+  app.register(import("./plugins/mongodb-plugin"));
 
-export async function start() {
-  try {
-    await fastify.listen({ port: config.PORT, host: "0.0.0.0" });
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
+  app.register(import("./modules/root-routes"));
+
+  return app;
 }

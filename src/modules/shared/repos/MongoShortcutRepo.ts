@@ -2,39 +2,28 @@ import { ObjectId, type Collection, type MongoClient } from "mongodb";
 import type { ShortcutRepo, UrlShortcut } from "../types";
 
 export class MongoShortcutRepo implements ShortcutRepo {
-  private readonly collection = "shortcuts";
-  private shortcutCollection: Collection;
+  private readonly collectionName = "shortcuts";
+  private shortcutCollection: Collection<Omit<UrlShortcut, "id">>;
 
   constructor(private readonly mongoClient: MongoClient) {
-    this.shortcutCollection = this.mongoClient.db("shortcuts").collection(this.collection);
+    this.shortcutCollection = this.mongoClient.db("shortcuts").collection(this.collectionName);
   }
 
-  async create(shortcut: Pick<UrlShortcut, "url" | "shortcut">): Promise<UrlShortcut> {
-    const result = await this.shortcutCollection.insertOne({
-      ...shortcut,
-      url: shortcut.url.toString(),
-    });
+  async create(shortcut: Pick<UrlShortcut, "originalUrl" | "alias">): Promise<UrlShortcut> {
+    const result = await this.shortcutCollection.insertOne(shortcut);
 
     return {
       id: result.insertedId.toHexString(),
-      shortcut: shortcut.shortcut,
-      url: shortcut.url,
+      alias: shortcut.alias,
+      originalUrl: shortcut.originalUrl,
     };
   }
 
-  async getBy(query: { shortcut?: string; id?: string }): Promise<UrlShortcut | null> {
-    const result = await this.shortcutCollection.findOne(
-      {
-        ...query,
-      },
-      {
-        projection: {
-          _id: 1,
-          url: 1,
-          shortcut: 1,
-        },
-      },
-    );
+  async getBy({ id, ...query }: { alias?: string; id?: string }): Promise<UrlShortcut | null> {
+    const result = await this.shortcutCollection.findOne({
+      ...(id ? { _id: new ObjectId(id) } : {}),
+      ...query,
+    });
 
     if (!result) {
       return null;
@@ -42,29 +31,17 @@ export class MongoShortcutRepo implements ShortcutRepo {
 
     return {
       id: result._id.toHexString(),
-      shortcut: result.shortcut,
-      url: result.url,
+      alias: result.alias,
+      originalUrl: result.originalUrl,
     };
   }
 
   async getAll(): Promise<UrlShortcut[]> {
-    const result = await this.shortcutCollection
-      .find(
-        {},
-        {
-          projection: {
-            _id: 1,
-            url: 1,
-            shortcut: 1,
-          },
-        },
-      )
-      .toArray();
-
+    const result = await this.shortcutCollection.find().toArray();
     return result.map((shortcut) => ({
       id: shortcut._id.toHexString(),
-      shortcut: shortcut.shortcut,
-      url: shortcut.url,
+      alias: shortcut.alias,
+      originalUrl: shortcut.originalUrl,
     }));
   }
 

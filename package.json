@@ -17,7 +17,8 @@
     "lint:prettier:fix": "prettier --write ./**/*.{js,json,ts}",
     "lint:eslint:fix": "eslint ./src/**/*.ts --fix",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run -c vitest.unit.config.ts"
   },
   "license": "UNLICENSED",
   "packageManager": "pnpm@9.5.0",
@@ -25,6 +26,7 @@
     "@fastify/mongodb": "^8.0.0",
     "fastify": "^4.28.1",
     "fastify-plugin": "^4.5.1",
+    "fastify-type-provider-zod": "^2.0.0",
     "mongodb": "^6.8.0",
     "pino": "^9.2.0",
     "zod": "^3.23.8"
@@ -38,6 +40,7 @@
     "globals": "^15.8.0",
     "pino-pretty": "^11.2.1",
     "prettier": "3.3.2",
+    "testcontainers": "^10.10.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.0",
