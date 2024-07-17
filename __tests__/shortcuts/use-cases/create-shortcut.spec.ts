@@ -54,6 +54,7 @@ describe("Create shortcut", () => {
     expect(response.json()).toHaveProperty("originalUrl", url);
     expect(response.json()).toHaveProperty("alias");
     expect(response.json()).toHaveProperty("id");
+    expect(response.json()).toHaveProperty("FAIL");
   });
 
   it("should return an error when the URL is not valid", async () => {
