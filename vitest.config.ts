@@ -5,7 +5,8 @@ export default defineConfig({
     environment: "node",
     coverage: {
       provider: "istanbul",
-      reporter: ["json", "text"],
+      reportOnFailure: true,
+      reporter: ["json", "json-summary", "text"],
     },
   },
 });

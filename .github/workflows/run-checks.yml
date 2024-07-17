@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   build-and-lint:
@@ -38,6 +37,10 @@ jobs:
     name: Test
     needs: build-and-lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v3
@@ -61,3 +64,7 @@ jobs:
 
       - name: "Run tests and collect coverage"
         run: pnpm test:coverage
+
+      - name: "Report Coverage"
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
