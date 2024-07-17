@@ -3,9 +3,9 @@ import { StartedTestContainer } from "testcontainers";
 import { afterAll, beforeAll, describe, expect, it, vi, afterEach } from "vitest";
 import { FastifyInstance } from "fastify";
 
-import { setup } from "../utils/setup";
+import { setup } from "../../utils/setup";
 
-describe("Redirects", () => {
+describe("Get all shortcuts", () => {
   let container: StartedTestContainer;
   let mongoClient: MongoClient;
   let app: FastifyInstance;
@@ -28,22 +28,19 @@ describe("Redirects", () => {
     await mongoClient.db("test").collection("shortcuts").deleteMany({});
   });
 
-  it("should redirect to the original URL when the alias is found", async () => {
+  it("should return all existing shortcuts", async () => {
     const url = "https://google.com";
 
-    const createShortcutResponse = await app.inject().post("/api/shortcuts").body({ url }).end();
-    const { alias } = createShortcutResponse.json();
-    const redirectResponse = await app.inject().get(alias).end();
+    await Promise.all([
+      await app.inject().post("/api/shortcuts").body({ url }).end(),
+      await app.inject().post("/api/shortcuts").body({ url }).end(),
+    ]);
+    const getAllResponse = await app.inject().get(`/api/shortcuts`).end();
 
-    expect(redirectResponse.statusCode).toBe(302);
-    expect(redirectResponse.headers).toHaveProperty("location", url);
-  });
-
-  it("should return a 404 status when the alias is not found", async () => {
-    const alias = "not-found";
-    const response = await app.inject().get(alias).end();
-
-    expect(response.statusCode).toBe(404);
-    expect(response.json()).toEqual({ message: "Shortcut not found" });
+    expect(getAllResponse.statusCode).toBe(200);
+    expect(getAllResponse.json()).toHaveLength(2);
+    expect(getAllResponse.json()).toHaveProperty("0.id");
+    expect(getAllResponse.json()).toHaveProperty("0.originalUrl", url);
+    expect(getAllResponse.json()).toHaveProperty("0.alias");
   });
 });

@@ -1,4 +1,4 @@
-import { createShortcutSchema, deleteShortcutSchema, getShortcutSchema } from "./shortcuts-schemas";
+import { createShortcutSchema, deleteShortcutSchema } from "./shortcuts-schemas";
 import { createShortcut } from "./use-cases/create-shortcut";
 import { MongoShortcutRepo } from "../shared/repos/MongoShortcutRepo";
 import { getAllShortcuts } from "./use-cases/get-all-shortcuts";
@@ -10,27 +10,6 @@ export async function shortcutsRoutes(app: FastifyZod) {
   app.get("/", async () => {
     return getAllShortcuts({ shortcutRepo, rootUrl: app.config.MY_URL });
   });
-
-  app.get(
-    "/:id",
-    {
-      schema: {
-        params: getShortcutSchema,
-      },
-    },
-    async (req, reply) => {
-      const { id } = req.params;
-
-      const shortcut = await shortcutRepo.getBy({ id });
-
-      if (!shortcut) {
-        reply.status(404);
-        return { message: "Shortcut not found" };
-      }
-
-      return shortcut;
-    },
-  );
 
   app.post(
     "/",
